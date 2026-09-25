@@ -1,3 +1,4 @@
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -10,7 +11,6 @@ class Settings(BaseSettings):
         extra_fields="ignore"
     )
 
-    # Небольшая проверка: SQLAlchemy требует строку, а не объект URL
     @field_validator("DATABASE_URL", mode="before")
     def assemble_db_connection(cls, v: str) -> str:
         if isinstance(v, str) and not v.startswith("postgresql+asyncpg://"):
